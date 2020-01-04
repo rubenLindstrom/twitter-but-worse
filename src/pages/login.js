@@ -22,12 +22,11 @@ const styles = theme => ({
 const Login = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
   const {
     classes,
     history,
     loginUser,
-    ui: { loading }
+    ui: { loading, errors }
   } = props;
 
   const handleSubmit = e => {
@@ -99,12 +98,10 @@ const Login = props => {
 Login.propTypes = {
   classes: PropTypes.object.isRequired,
   loginUser: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  user: state.user,
   ui: state.ui
 });
 

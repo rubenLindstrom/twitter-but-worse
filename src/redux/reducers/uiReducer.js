@@ -2,7 +2,7 @@ import { uiTypes } from "../types";
 
 const initialState = {
   loading: false,
-  errors: null
+  errors: {}
 };
 
 export default (state = initialState, action) => {
