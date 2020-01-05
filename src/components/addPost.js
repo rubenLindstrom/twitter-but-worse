@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -24,21 +24,33 @@ const styles = theme => ({
   ...theme.custom,
   closeButton: {
     position: "absolute",
-    left: "90%",
-    top: "10%"
+    left: "91%",
+    top: "3%"
+  },
+  button: {
+    marginTop: 10
   }
 });
 
 const AddPost = props => {
   const [open, setOpen] = useState(false);
   const [body, setBody] = useState("");
+  const inputRef = useRef(null);
 
-  const { classes, errors, loading, addPost } = props;
+  const { classes, loading, addPost, errors, clearErrors } = props;
+
+  useEffect(() => {
+    setBody("");
+    if (Object.keys(errors).length !== 0) clearErrors();
+  }, [open]);
+
+  useEffect(() => {
+    inputRef.current && inputRef.current.focus();
+  }, [inputRef]);
 
   const handleSubmit = e => {
     e.preventDefault();
-    addPost({ body });
-    setOpen(false);
+    addPost({ body }).then(res => res.success && setOpen(false));
   };
 
   return (
@@ -74,6 +86,7 @@ const AddPost = props => {
               helperText={errors.body}
               className={classes.textField}
               onChange={e => setBody(e.target.value)}
+              ref={inputRef}
             />
             <Button
               type="submit"
@@ -96,6 +109,7 @@ const AddPost = props => {
 
 AddPost.propTypes = {
   addPost: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -106,7 +120,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatch = {
-  addPost: dataActions.addPost
+  addPost: dataActions.addPost,
+  clearErrors: dataActions.clearErrors
 };
 
 export default connect(

@@ -7,7 +7,8 @@ export const userTypes = {
 
 export const uiTypes = {
   SET_ERRORS: "SET_ERRORS",
-  LOADING: "LOADING_UI",
+  SET_LOADING: "SET_LOADING_UI",
+  STOP_LOADING: "STOP_LOADING",
   CLEAR_ERRORS: "CLEAR_ERRORS"
 };
 

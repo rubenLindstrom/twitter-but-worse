@@ -11,10 +11,10 @@ export default (state = initialState, action) => {
       return { ...state, loading: false, errors: action.payload };
 
     case uiTypes.CLEAR_ERRORS:
-      return { ...state, loading: false, errors: {} };
+      return { ...state, errors: {} };
 
-    case uiTypes.LOADING:
-      return { ...state, loading: true };
+    case uiTypes.SET_LOADING:
+      return { ...state, loading: action.payload };
 
     default:
       return state;

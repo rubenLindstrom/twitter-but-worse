@@ -20,6 +20,20 @@ const getPosts = () => dispatch => {
     });
 };
 
+// Get a single post
+const getPost = id => dispatch => {
+  dispatch({ type: uiTypes.SET_LOADING, payload: true });
+  axios
+    .get(`/post/${id}`)
+    .then(res => {
+      dispatch({ type: uiTypes.SET_LOADING, payload: false });
+      dispatch({ type: dataTypes.SET_POST, payload: res.data });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
 // Approve a post
 // TODO: Change like/dislike asyncronously
 const toggleApprovePost = (id, isApprove) => dispatch => {
@@ -56,25 +70,33 @@ const deletePost = postId => dispatch => {
 // Add a post
 const addPost = post => dispatch => {
   console.log("add post called");
-  dispatch({ type: uiTypes.LOADING });
+  dispatch({ type: uiTypes.SET_LOADING, payload: true });
+  dispatch({ type: uiTypes.CLEAR_ERRORS });
 
-  axios
+  return axios
     .post("/post", post)
     .then(res => {
+      dispatch({ type: uiTypes.SET_LOADING, payload: false });
       dispatch({ type: dataTypes.ADD_POST, payload: res.data });
-      dispatch({ type: uiTypes.CLEAR_ERRORS });
+      return { success: true };
     })
     .catch(err => {
       dispatch({
         type: uiTypes.SET_ERRORS,
         payload: err.response.data
       });
+      return { success: false };
     });
+};
+
+const clearErrors = () => dispatch => {
+  dispatch({ type: uiTypes.CLEAR_ERRORS });
 };
 
 export default {
   getPosts,
   toggleApprovePost,
   deletePost,
-  addPost
+  addPost,
+  clearErrors
 };

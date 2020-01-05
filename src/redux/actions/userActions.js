@@ -10,12 +10,13 @@ const setAuthorizationHeader = token => {
 const login = (userData, history) => dispatch => {
   console.log("login called");
 
-  dispatch({ type: uiTypes.LOADING });
+  dispatch({ type: uiTypes.SET_LOADING, payload: true });
+  dispatch({ type: uiTypes.CLEAR_ERRORS });
   axios
     .post("/login", userData)
     .then(res => {
+      dispatch({ type: uiTypes.SET_LOADING, payload: false });
       setAuthorizationHeader(res.data.token);
-      dispatch({ type: uiTypes.CLEAR_ERRORS });
       dispatch(getUserData());
       history.push("/");
     })
@@ -31,10 +32,11 @@ const login = (userData, history) => dispatch => {
 const signup = (userData, history) => dispatch => {
   console.log("signup called");
 
-  dispatch({ type: uiTypes.LOADING });
+  dispatch({ type: uiTypes.SET_LOADING, payload: true });
   axios
     .post("/signup", userData)
     .then(res => {
+      dispatch({ type: uiTypes.SET_LOADING, payload: false });
       dispatch({ type: uiTypes.CLEAR_ERRORS });
       setAuthorizationHeader(res.data.token);
       dispatch(getUserData());
