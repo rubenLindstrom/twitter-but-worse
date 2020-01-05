@@ -5,14 +5,15 @@ import { Link } from "react-router-dom";
 // Redux
 import { connect } from "react-redux";
 
+// Components
 import MyButton from "../util/myButton";
+import AddPost from "./addPost";
 
 // MUI
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 // Icons
-import AddIcon from "@material-ui/icons/Add";
 import HomeIcon from "@material-ui/icons/Home";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 
@@ -23,9 +24,7 @@ const navbar = props => {
       <Toolbar id="nav-container">
         {authenticated ? (
           <>
-            <MyButton tip="Create a post">
-              <AddIcon />
-            </MyButton>
+            <AddPost />
             <Link to="/">
               <MyButton tip="Home">
                 <HomeIcon />

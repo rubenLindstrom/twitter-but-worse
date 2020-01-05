@@ -122,7 +122,7 @@ post.propTypes = {
   toggleApprovePost: PropTypes.func.isRequired,
   approves: PropTypes.array.isRequired,
   authenticated: PropTypes.bool.isRequired,
-  currentUserHandle: PropTypes.string.isRequired,
+  currentUserHandle: PropTypes.string,
   post: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired
 };

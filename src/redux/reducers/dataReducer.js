@@ -34,6 +34,12 @@ export default (state = initialState, action) => {
         posts: oldPosts.filter(post => post.id !== action.payload)
       };
 
+    case dataTypes.ADD_POST:
+      return {
+        ...state,
+        posts: [action.payload, ...state.posts]
+      };
+
     default:
       return state;
   }

@@ -15,7 +15,7 @@ const Home = props => {
 
   useEffect(() => {
     getPosts();
-  }, []);
+  }, [getPosts]);
 
   return (
     <div>

@@ -8,13 +8,15 @@ const setAuthorizationHeader = token => {
 };
 
 const login = (userData, history) => dispatch => {
+  console.log("login called");
+
   dispatch({ type: uiTypes.LOADING });
   axios
     .post("/login", userData)
     .then(res => {
       setAuthorizationHeader(res.data.token);
-      dispatch(getUserData());
       dispatch({ type: uiTypes.CLEAR_ERRORS });
+      dispatch(getUserData());
       history.push("/");
     })
     .catch(err => {
@@ -27,6 +29,8 @@ const login = (userData, history) => dispatch => {
 };
 
 const signup = (userData, history) => dispatch => {
+  console.log("signup called");
+
   dispatch({ type: uiTypes.LOADING });
   axios
     .post("/signup", userData)

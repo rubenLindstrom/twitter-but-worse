@@ -1,4 +1,4 @@
-import { dataTypes } from "../types";
+import { dataTypes, uiTypes } from "../types";
 import axios from "axios";
 
 // Get all posts
@@ -53,8 +53,28 @@ const deletePost = postId => dispatch => {
     .catch(err => console.log(err));
 };
 
+// Add a post
+const addPost = post => dispatch => {
+  console.log("add post called");
+  dispatch({ type: uiTypes.LOADING });
+
+  axios
+    .post("/post", post)
+    .then(res => {
+      dispatch({ type: dataTypes.ADD_POST, payload: res.data });
+      dispatch({ type: uiTypes.CLEAR_ERRORS });
+    })
+    .catch(err => {
+      dispatch({
+        type: uiTypes.SET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
 export default {
   getPosts,
   toggleApprovePost,
-  deletePost
+  deletePost,
+  addPost
 };
