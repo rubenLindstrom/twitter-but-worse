@@ -19,19 +19,20 @@ const styles = theme => ({
   ...theme.custom
 });
 
+// TODO: Clear error somehow, when navigating from "signup" or vice versa
 const Login = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const {
     classes,
     history,
-    loginUser,
+    login,
     ui: { loading, errors }
   } = props;
 
   const handleSubmit = e => {
     e.preventDefault();
-    loginUser({ email, password }, history);
+    login({ email, password }, history);
   };
 
   return (
@@ -97,7 +98,7 @@ const Login = props => {
 
 Login.propTypes = {
   classes: PropTypes.object.isRequired,
-  loginUser: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
   ui: PropTypes.object.isRequired
 };
 
@@ -106,7 +107,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatch = {
-  loginUser: userActions.loginUser
+  login: userActions.login
 };
 
 export default connect(mapStateToProps, mapDispatch)(withStyles(styles)(Login));

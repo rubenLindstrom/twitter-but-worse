@@ -1,39 +1,55 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import PropTypes from "prop-types";
+
+// Redux
+import { connect } from "react-redux";
+import dataActions from "../redux/actions/dataActions";
 
 import Grid from "@material-ui/core/Grid";
 
 import Post from "../components/post";
+import Profile from "../components/profile";
 
-const Home = () => {
-  const [posts, setPosts] = useState(null);
+const Home = props => {
+  const { getPosts, loading, posts } = props;
+
+  console.log("Home rerender");
+
   useEffect(() => {
-    axios
-      .get("/posts")
-      .then(res => {
-        console.log(res.data);
-        setPosts(res.data);
-      })
-      .catch(err => console.error(err));
+    getPosts();
   }, []);
 
-  const recentPosts = posts ? (
-    posts.map(post => <Post key={post.id} post={post} />)
-  ) : (
-    <p>Loading posts...</p>
-  );
   return (
     <div>
       <Grid container spacing={4}>
         <Grid item sm={8} xs={12}>
-          {recentPosts}
+          {loading ? (
+            <p>Loading posts...</p>
+          ) : (
+            posts.map(post => <Post key={post.id} post={post} />)
+          )}
         </Grid>
         <Grid item sm={4} xs={12}>
-          <p>Profile</p>
+          <Profile />
         </Grid>
       </Grid>
     </div>
   );
 };
 
-export default Home;
+Home.propTypes = {
+  getPosts: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  posts: PropTypes.array.isRequired
+};
+
+const mapStateToProps = state => ({
+  loading: state.data.loading,
+  posts: state.data.posts
+});
+
+const mapDispatch = {
+  getPosts: dataActions.getPosts
+};
+
+export default connect(mapStateToProps, mapDispatch)(Home);

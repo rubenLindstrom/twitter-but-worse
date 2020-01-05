@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Logo from "../images/logo.png";
+
+// Redux
+import { connect } from "react-redux";
+import userActions from "../redux/actions/userActions";
 
 // MUI
 import Grid from "@material-ui/core/Grid";
@@ -21,25 +24,17 @@ const Signup = props => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [handle, setHandle] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({});
-  const { classes, history } = props;
+
+  const {
+    classes,
+    signup,
+    history,
+    ui: { loading, errors }
+  } = props;
 
   const handleSubmit = e => {
     e.preventDefault();
-    setLoading(true);
-    axios
-      .post("/signup", { email, password, confirmPassword, handle })
-      .then(res => {
-        console.log(res.data);
-        localStorage.setItem("authToken", `Bearer ${res.data.token}`);
-        setLoading(false);
-        history.push("/");
-      })
-      .catch(err => {
-        setErrors(err.response.data);
-        setLoading(false);
-      });
+    signup({ email, password, confirmPassword, handle }, history);
   };
 
   return (
@@ -128,7 +123,20 @@ const Signup = props => {
 };
 
 Signup.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
+  signup: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(Signup);
+const mapStateToProps = state => ({
+  ui: state.ui
+});
+
+const mapDispatch = {
+  signup: userActions.signup
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatch
+)(withStyles(styles)(Signup));

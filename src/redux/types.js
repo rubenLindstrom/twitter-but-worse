@@ -11,4 +11,10 @@ export const uiTypes = {
   CLEAR_ERRORS: "CLEAR_ERRORS"
 };
 
-export const dataTypes = {};
+export const dataTypes = {
+  SET_POSTS: "SET_POSTS",
+  SET_POST: "SET_POST",
+  LOADING: "LOADING",
+  APPROVE_POST: "APPROVE_POST",
+  DISAPPROVE_POST: "DISAPPROVE_POST"
+};

@@ -1,14 +1,26 @@
 import React from "react";
+import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+
+// Components
+import MyButton from "../util/myButton";
+
+// Redux
+import { connect } from "react-redux";
+import dataActions from "../redux/actions/dataActions";
 
 // MUI
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+// Icons
+import ChatIcon from "@material-ui/icons/Chat";
+import FavoriteFilled from "@material-ui/icons/Favorite";
+import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 
 const styles = {
   card: {
@@ -36,8 +48,36 @@ const post = props => {
       createdAt,
       approveCount,
       commentCount
-    }
+    },
+    approves,
+    authenticated,
+    toggleApprovePost
   } = props;
+
+  const approvedByUser =
+    approves && approves.find(approvement => approvement.postId === id)
+      ? true
+      : false;
+
+  const toggleApprove = () => {
+    toggleApprovePost(id, !approvedByUser);
+  };
+
+  const approveButton = !authenticated ? (
+    <MyButton tip="Approve">
+      <Link to="/login" />
+      <FavoriteBorder color="primary" />
+    </MyButton>
+  ) : approvedByUser ? (
+    <MyButton tip="Disapprove post" onClick={toggleApprove}>
+      <FavoriteFilled color="primary" />
+    </MyButton>
+  ) : (
+    <MyButton tip="Approve post" onClick={toggleApprove}>
+      <FavoriteBorder color="primary" />
+    </MyButton>
+  );
+
   return (
     <Card className={classes.card}>
       <CardMedia
@@ -58,9 +98,32 @@ const post = props => {
           {dayjs(createdAt).fromNow()}
         </Typography>
         <Typography variant="body1">{body}</Typography>
+        {approveButton}
+        <span>{approveCount}</span>
+        <MyButton tip="Comments">
+          <ChatIcon color="primary" />
+        </MyButton>
+        <span>{commentCount}</span>
       </CardContent>
     </Card>
   );
 };
 
-export default withStyles(styles)(post);
+post.propTypes = {
+  toggleApprovePost: PropTypes.func.isRequired,
+  approves: PropTypes.array.isRequired,
+  authenticated: PropTypes.bool.isRequired,
+  post: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  approves: state.user.approves,
+  authenticated: state.user.authenticated
+});
+
+const mapDispatch = {
+  toggleApprovePost: dataActions.toggleApprovePost
+};
+
+export default connect(mapStateToProps, mapDispatch)(withStyles(styles)(post));
