@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
 // Redux
@@ -12,8 +12,6 @@ import Profile from "../components/profile";
 
 const Home = props => {
   const { getPosts, loading, posts } = props;
-
-  console.log("Home rerender");
 
   useEffect(() => {
     getPosts();

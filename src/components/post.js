@@ -7,6 +7,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 // Components
 import MyButton from "../util/myButton";
+import DeletePost from "./deletePost";
 
 // Redux
 import { connect } from "react-redux";
@@ -24,6 +25,7 @@ import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 
 const styles = {
   card: {
+    position: "relative",
     display: "flex",
     marginBottom: 20
   },
@@ -51,6 +53,7 @@ const post = props => {
     },
     approves,
     authenticated,
+    currentUserHandle,
     toggleApprovePost
   } = props;
 
@@ -78,6 +81,11 @@ const post = props => {
     </MyButton>
   );
 
+  const deleteButton =
+    authenticated && userHandle === currentUserHandle ? (
+      <DeletePost postId={id} />
+    ) : null;
+
   return (
     <Card className={classes.card}>
       <CardMedia
@@ -94,6 +102,7 @@ const post = props => {
         >
           {userHandle}
         </Typography>
+        {deleteButton}
         <Typography variant="body2" color="textSecondary">
           {dayjs(createdAt).fromNow()}
         </Typography>
@@ -113,13 +122,15 @@ post.propTypes = {
   toggleApprovePost: PropTypes.func.isRequired,
   approves: PropTypes.array.isRequired,
   authenticated: PropTypes.bool.isRequired,
+  currentUserHandle: PropTypes.string.isRequired,
   post: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   approves: state.user.approves,
-  authenticated: state.user.authenticated
+  authenticated: state.user.authenticated,
+  currentUserHandle: state.user.credentials.handle
 });
 
 const mapDispatch = {

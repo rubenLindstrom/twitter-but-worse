@@ -21,6 +21,7 @@ const getPosts = () => dispatch => {
 };
 
 // Approve a post
+// TODO: Change like/dislike asyncronously
 const toggleApprovePost = (id, isApprove) => dispatch => {
   axios
     .post(`/post/${id}/approve`, { isApprove })
@@ -40,7 +41,20 @@ const toggleApprovePost = (id, isApprove) => dispatch => {
     });
 };
 
+const deletePost = postId => dispatch => {
+  axios
+    .delete(`/post/${postId}`)
+    .then(() => {
+      dispatch({
+        type: dataTypes.DELETE_POST,
+        payload: postId
+      });
+    })
+    .catch(err => console.log(err));
+};
+
 export default {
   getPosts,
-  toggleApprovePost
+  toggleApprovePost,
+  deletePost
 };

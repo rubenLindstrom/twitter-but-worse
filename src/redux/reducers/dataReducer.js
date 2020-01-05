@@ -27,6 +27,13 @@ export default (state = initialState, action) => {
         posts: newPosts
       };
 
+    case dataTypes.DELETE_POST:
+      const oldPosts = [...state.posts];
+      return {
+        ...state,
+        posts: oldPosts.filter(post => post.id !== action.payload)
+      };
+
     default:
       return state;
   }
