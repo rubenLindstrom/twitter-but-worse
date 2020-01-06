@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-import MyButton from "../util/myButton";
+
+// Components
+import MyButton from "../../util/myButton";
 
 // Redux
 import { connect } from "react-redux";
-import dataActions from "../redux/actions/dataActions";
+import dataActions from "../../redux/actions/dataActions";
 
 // MUI
 import Button from "@material-ui/core/Button";
@@ -28,6 +30,8 @@ const DeletePost = props => {
   const { classes, deletePost, postId } = props;
 
   const handleDelete = () => {
+    console.log(postId);
+
     deletePost(postId);
     setOpen(false);
   };

@@ -29,7 +29,7 @@ export default (state = initialState, action) => {
           ...state.approves,
           {
             userHandle: state.credentials.handle,
-            postId: action.payload.id
+            postId: action.payload.postId
           }
         ]
       };
@@ -38,7 +38,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         approves: state.approves.filter(
-          approve => approve.postId !== action.payload.id
+          approve => approve.postId !== action.payload.postId
         )
       };
 

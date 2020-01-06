@@ -6,12 +6,13 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 // Components
-import MyButton from "../util/myButton";
+import MyButton from "../../util/myButton";
 import DeletePost from "./deletePost";
+import PostDialog from "./postDialog";
+import ApproveButton from "./approveButton";
 
 // Redux
 import { connect } from "react-redux";
-import dataActions from "../redux/actions/dataActions";
 
 // MUI
 import Card from "@material-ui/core/Card";
@@ -20,8 +21,6 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 // Icons
 import ChatIcon from "@material-ui/icons/Chat";
-import FavoriteFilled from "@material-ui/icons/Favorite";
-import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 
 const styles = {
   card: {
@@ -38,48 +37,18 @@ const styles = {
   }
 };
 
-const post = props => {
+const Post = props => {
   dayjs.extend(relativeTime);
+  const { classes, authenticated, currentUserHandle, id, post } = props;
+
   const {
-    classes,
-    post: {
-      userImage,
-      body,
-      userHandle,
-      id,
-      createdAt,
-      approveCount,
-      commentCount
-    },
-    approves,
-    authenticated,
-    currentUserHandle,
-    toggleApprovePost
-  } = props;
-
-  const approvedByUser =
-    approves && approves.find(approvement => approvement.postId === id)
-      ? true
-      : false;
-
-  const toggleApprove = () => {
-    toggleApprovePost(id, !approvedByUser);
-  };
-
-  const approveButton = !authenticated ? (
-    <MyButton tip="Approve">
-      <Link to="/login" />
-      <FavoriteBorder color="primary" />
-    </MyButton>
-  ) : approvedByUser ? (
-    <MyButton tip="Disapprove post" onClick={toggleApprove}>
-      <FavoriteFilled color="primary" />
-    </MyButton>
-  ) : (
-    <MyButton tip="Approve post" onClick={toggleApprove}>
-      <FavoriteBorder color="primary" />
-    </MyButton>
-  );
+    userImage,
+    body,
+    userHandle,
+    createdAt,
+    commentCount,
+    approveCount
+  } = post;
 
   const deleteButton =
     authenticated && userHandle === currentUserHandle ? (
@@ -107,34 +76,28 @@ const post = props => {
           {dayjs(createdAt).fromNow()}
         </Typography>
         <Typography variant="body1">{body}</Typography>
-        {approveButton}
-        <span>{approveCount}</span>
+        <ApproveButton postId={id} approveCount={approveCount} />
         <MyButton tip="Comments">
           <ChatIcon color="primary" />
         </MyButton>
         <span>{commentCount}</span>
+        <PostDialog postId={id} post={{ ...post }} />
       </CardContent>
     </Card>
   );
 };
 
-post.propTypes = {
-  toggleApprovePost: PropTypes.func.isRequired,
-  approves: PropTypes.array.isRequired,
+Post.propTypes = {
   authenticated: PropTypes.bool.isRequired,
   currentUserHandle: PropTypes.string,
   post: PropTypes.object.isRequired,
+  id: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  approves: state.user.approves,
   authenticated: state.user.authenticated,
   currentUserHandle: state.user.credentials.handle
 });
 
-const mapDispatch = {
-  toggleApprovePost: dataActions.toggleApprovePost
-};
-
-export default connect(mapStateToProps, mapDispatch)(withStyles(styles)(post));
+export default connect(mapStateToProps)(withStyles(styles)(Post));

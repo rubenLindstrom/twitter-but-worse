@@ -6,11 +6,11 @@ import dayjs from "dayjs";
 
 // Components
 import EditDetails from "./editDetails";
-import MyButton from "../util/myButton";
+import MyButton from "../../util/myButton";
 
 // Redux
 import { connect } from "react-redux";
-import userActions from "../redux/actions/userActions";
+import userActions from "../../redux/actions/userActions";
 
 // MUI
 import Button from "@material-ui/core/Button";

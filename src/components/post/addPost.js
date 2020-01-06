@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 // Components
-import MyButton from "../util/myButton";
+import MyButton from "../../util/myButton";
 
 // Redux
 import { connect } from "react-redux";
-import dataActions from "../redux/actions/dataActions";
+import dataActions from "../../redux/actions/dataActions";
 
 // MUI
 import Button from "@material-ui/core/Button";
@@ -42,7 +42,8 @@ const AddPost = props => {
   useEffect(() => {
     setBody("");
     if (Object.keys(errors).length !== 0) clearErrors();
-  }, [open]);
+    // eslint-disable-next-line
+  }, [open, clearErrors]);
 
   useEffect(() => {
     inputRef.current && inputRef.current.focus();

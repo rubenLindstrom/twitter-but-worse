@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 // Components
-import MyButton from "../util/myButton";
-import AddPost from "./addPost";
+import MyButton from "../../util/myButton";
+import AddPost from "../post/addPost";
 
 // MUI
 import AppBar from "@material-ui/core/AppBar";
