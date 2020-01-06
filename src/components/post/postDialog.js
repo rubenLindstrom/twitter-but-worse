@@ -111,7 +111,7 @@ const PostDialog = props => {
       <hr className={classes.visibleSeparator} />
       <CommentForm postId={postId} />
       {comments ? (
-        <Comments comments={[...comments]} />
+        <Comments comments={[...comments]} postId={postId} />
       ) : (
         <p>Loading comments...</p>
       )}

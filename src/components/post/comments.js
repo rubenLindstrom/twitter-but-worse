@@ -3,11 +3,16 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 
+// Redux
+import { connect } from "react-redux";
+
+// Components
+import DeleteComment from "./deleteComment";
+
 // MUI
 import Grid from "@material-ui/core/Grid";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
-import { connect } from "react-redux";
 
 const styles = theme => ({
   ...theme.custom,
@@ -30,7 +35,7 @@ const styles = theme => ({
 });
 
 const Comments = props => {
-  const { classes, comments } = props;
+  const { classes, comments, authenticated, currentUserHandle, postId } = props;
   return (
     <Grid container className={classes.commentsContainer}>
       {comments.map((comment, index) => {
@@ -38,7 +43,10 @@ const Comments = props => {
         return (
           <React.Fragment key={id}>
             <Grid item sm={12}>
-              <Grid container>
+              <Grid container style={{ position: "relative" }}>
+                {authenticated && userHandle === currentUserHandle && (
+                  <DeleteComment commentId={id} postId={postId} />
+                )}
                 <Grid item sm={2}>
                   <img
                     src={userImage}
@@ -77,7 +85,14 @@ const Comments = props => {
 
 Comments.propTypes = {
   classes: PropTypes.object.isRequired,
-  comments: PropTypes.array.isRequired
+  comments: PropTypes.array.isRequired,
+  authenticated: PropTypes.bool.isRequired,
+  currentUserHandle: PropTypes.string.isRequired
 };
 
-export default connect()(withStyles(styles)(Comments));
+const mapStateToProps = state => ({
+  authenticated: state.user.authenticated,
+  currentUserHandle: state.user.credentials.handle
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(Comments));

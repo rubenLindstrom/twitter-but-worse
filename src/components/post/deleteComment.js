@@ -25,19 +25,19 @@ const styles = {
   }
 };
 
-const DeletePost = props => {
+const DeleteComment = props => {
   const [open, setOpen] = useState(false);
-  const { classes, deletePost, postId } = props;
+  const { classes, deleteComment, commentId, postId } = props;
 
   const handleDelete = () => {
-    deletePost(postId);
+    deleteComment(commentId, postId);
     setOpen(false);
   };
 
   return (
     <>
       <MyButton
-        tip="Delete post"
+        tip="Delete comment"
         onClick={() => setOpen(!open)}
         btnClassName={classes.deleteButton}
       >
@@ -49,7 +49,7 @@ const DeletePost = props => {
         fullWidth
         maxWidth="sm"
       >
-        <DialogTitle>Are you sure you want to delete this post?</DialogTitle>
+        <DialogTitle>Are you sure you want to delete this comment?</DialogTitle>
         <DialogActions>
           <Button onClick={() => setOpen(false)} color="primary">
             Cancel
@@ -63,14 +63,15 @@ const DeletePost = props => {
   );
 };
 
-DeletePost.propTypes = {
+DeleteComment.propTypes = {
   classes: PropTypes.object.isRequired,
-  deletePost: PropTypes.func.isRequired,
-  postId: PropTypes.string.isRequired
+  deleteComment: PropTypes.func.isRequired,
+  postId: PropTypes.string.isRequired,
+  commentId: PropTypes.string.isRequired
 };
 
 const mapDispatch = {
-  deletePost: dataActions.deletePost
+  deleteComment: dataActions.deleteComment
 };
 
-export default connect(null, mapDispatch)(withStyles(styles)(DeletePost));
+export default connect(null, mapDispatch)(withStyles(styles)(DeleteComment));

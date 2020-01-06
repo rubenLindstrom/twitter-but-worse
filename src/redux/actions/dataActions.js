@@ -86,19 +86,18 @@ const deletePost = postId => dispatch => {
 };
 
 const deleteComment = (commentId, postId) => dispatch => {
+  dispatch({
+    type: dataTypes.DELETE_COMMENT,
+    payload: { commentId, postId }
+  });
   axios
-    .delete(`/comment/${commentId}`, { postId })
-    .then(() => {
-      dispatch({
-        type: dataTypes.DELETE_COMMENT,
-        payload: commentId
-      });
-    })
+    .delete(`/comment/${commentId}`, { data: { postId } })
+    .then(() => {})
     .catch(err => console.log(err));
 };
 
 // Add a post
-const addPost = post => dispatch => {
+const addPost = post => async dispatch => {
   if (isEmpty(post.body)) {
     dispatch({
       type: uiTypes.SET_ERRORS,
@@ -106,21 +105,24 @@ const addPost = post => dispatch => {
         body: "Must not be empty!"
       }
     });
+    return { success: false };
   }
   dispatch({ type: uiTypes.SET_LOADING, payload: true });
   dispatch(clearErrors());
 
-  axios
+  return axios
     .post("/post", post)
     .then(res => {
       dispatch({ type: uiTypes.SET_LOADING, payload: false });
       dispatch({ type: dataTypes.ADD_POST, payload: res.data });
+      return { success: true };
     })
     .catch(err => {
       dispatch({
         type: uiTypes.SET_ERRORS,
         payload: err.response.data
       });
+      return { success: false };
     });
 };
 
@@ -175,5 +177,6 @@ export default {
   addPost,
   clearErrors,
   getComments,
-  submitComment
+  submitComment,
+  deleteComment
 };

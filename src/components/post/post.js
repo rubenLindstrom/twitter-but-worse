@@ -50,11 +50,6 @@ const Post = props => {
     approveCount
   } = post;
 
-  const deleteButton =
-    authenticated && userHandle === currentUserHandle ? (
-      <DeletePost postId={id} />
-    ) : null;
-
   return (
     <Card className={classes.card}>
       <CardMedia
@@ -71,7 +66,9 @@ const Post = props => {
         >
           {userHandle}
         </Typography>
-        {deleteButton}
+        {authenticated && userHandle === currentUserHandle && (
+          <DeletePost postId={id} />
+        )}
         <Typography variant="body2" color="textSecondary">
           {dayjs(createdAt).fromNow()}
         </Typography>
