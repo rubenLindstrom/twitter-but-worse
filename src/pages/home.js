@@ -5,10 +5,13 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import dataActions from "../redux/actions/dataActions";
 
+// MUI
 import Grid from "@material-ui/core/Grid";
 
+// Components
 import Post from "../components/post/post";
 import Profile from "../components/profile/profile";
+import PostSkeleton from "../util/postSkeleton";
 
 const Home = props => {
   const { getPosts, posts } = props;
@@ -23,10 +26,10 @@ const Home = props => {
         {posts ? (
           Object.keys(posts).map(id => {
             const post = posts[id];
-            return <Post key={id} id={id} post={{ ...post }} />;
+            return <Post key={id} id={id} post={post} />;
           })
         ) : (
-          <p>Loading posts...</p>
+          <PostSkeleton />
         )}
       </Grid>
       <Grid item sm={4} xs={12}>

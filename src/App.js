@@ -25,6 +25,7 @@ function App() {
           <Switch>
             <Route path="/" component={Home} exact />
             <Route path="/users/:handle" component={User} exact />
+            <Route path="/users/:handle/post/:postId" component={User} exact />
             <AuthRoute path="/login" component={Login} exact />
             <AuthRoute path="/signup" component={Signup} exact />
           </Switch>

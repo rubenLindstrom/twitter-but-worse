@@ -40,8 +40,6 @@ const getPost = id => dispatch => {
 // Approve a post
 // TODO: Change like/dislike asyncronously
 const toggleApprovePost = (postId, isApprove) => dispatch => {
-  console.log(postId);
-
   const type = isApprove ? dataTypes.APPROVE_POST : dataTypes.DISAPPROVE_POST;
   dispatch({
     type,
@@ -169,6 +167,29 @@ const submitComment = (postId, comment) => async dispatch => {
     });
 };
 
+const getUserData = userHandle => async dispatch => {
+  dispatch({ type: dataTypes.LOADING });
+
+  return axios
+    .get(`/user/${userHandle}`)
+    .then(res => {
+      const { user, posts } = res.data;
+      dispatch({
+        type: dataTypes.SET_POSTS,
+        payload: posts
+      });
+
+      return { profile: user };
+    })
+    .catch(err => {
+      dispatch({
+        type: uiTypes.SET_ERRORS,
+        payload: err.response.data
+      });
+      return { profile: null };
+    });
+};
+
 export default {
   getPosts,
   getPost,
@@ -178,5 +199,6 @@ export default {
   clearErrors,
   getComments,
   submitComment,
-  deleteComment
+  deleteComment,
+  getUserData
 };

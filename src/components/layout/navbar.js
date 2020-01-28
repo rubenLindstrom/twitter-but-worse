@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 // Components
 import MyButton from "../../util/myButton";
 import AddPost from "../post/addPost";
+import Notifications from "../notifications/notifications";
 
 // MUI
 import AppBar from "@material-ui/core/AppBar";
@@ -30,9 +31,7 @@ const navbar = props => {
                 <HomeIcon />
               </MyButton>
             </Link>
-            <MyButton tip="Notifications">
-              <NotificationsIcon />
-            </MyButton>
+            <Notifications />
           </>
         ) : (
           <>

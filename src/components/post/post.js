@@ -39,7 +39,14 @@ const styles = {
 
 const Post = props => {
   dayjs.extend(relativeTime);
-  const { classes, authenticated, currentUserHandle, id, post } = props;
+  const {
+    classes,
+    authenticated,
+    currentUserHandle,
+    id,
+    post,
+    openDialog
+  } = props;
 
   const {
     userImage,
@@ -78,7 +85,7 @@ const Post = props => {
           <ChatIcon color="primary" />
         </MyButton>
         <span>{commentCount}</span>
-        <PostDialog postId={id} post={{ ...post }} />
+        <PostDialog postId={id} post={{ ...post }} openDialog={openDialog} />
       </CardContent>
     </Card>
   );
@@ -89,7 +96,8 @@ Post.propTypes = {
   currentUserHandle: PropTypes.string,
   post: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  openDialog: PropTypes.bool
 };
 
 const mapStateToProps = state => ({

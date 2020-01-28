@@ -11,6 +11,9 @@ import store from "./redux/store";
 import userActions from "./redux/actions/userActions";
 import { userTypes } from "./redux/types";
 
+axios.defaults.baseURL =
+  "https://europe-west2-soccio-e29bc.cloudfunctions.net/api";
+
 const token = localStorage.authToken;
 if (token) {
   const decodedToken = jwtDecode(token);

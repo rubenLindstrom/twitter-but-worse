@@ -53,14 +53,13 @@ const styles = theme => ({
 });
 
 const PostDialog = props => {
-  const [open, setOpen] = useState(false);
-
   const {
     classes,
     loading,
     getComments,
     clearErrors,
     postId,
+    openDialog,
     post: {
       body,
       userHandle,
@@ -71,6 +70,28 @@ const PostDialog = props => {
       userImage
     }
   } = props;
+
+  const [open, setOpen] = useState(false);
+  const [oldPath, setOldPath] = useState(null);
+
+  useEffect(() => {
+    if (openDialog) handleOpen();
+    // eslint-disable-next-line
+  }, [openDialog]);
+
+  const handleOpen = () => {
+    let returnToPath = window.location.pathname;
+    setOpen(true);
+    const newPath = `/users/${userHandle}/post/${postId}`;
+    if (newPath === returnToPath) returnToPath = `/users/${userHandle}`;
+    setOldPath(returnToPath);
+    window.history.pushState(null, null, newPath);
+  };
+
+  const handleClose = () => {
+    window.history.pushState(null, null, oldPath);
+    setOpen(false);
+  };
 
   useEffect(() => {
     if (!comments && open) getComments(postId);
@@ -121,21 +142,16 @@ const PostDialog = props => {
   return (
     <>
       <MyButton
-        onClick={() => setOpen(true)}
+        onClick={handleOpen}
         tip="Expand post"
         tipClassName={classes.expandButton}
       >
         <UnfoldMore color="primary" />
       </MyButton>
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        fullWidth
-        maxWidth="sm"
-      >
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
         <MyButton
           tip="Close"
-          onClick={() => setOpen(false)}
+          onClick={handleClose}
           tipClassName={classes.closeButton}
         >
           <CloseIcon />
@@ -153,7 +169,8 @@ PostDialog.propTypes = {
   post: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
   getComments: PropTypes.func.isRequired,
-  clearErrors: PropTypes.func.isRequired
+  clearErrors: PropTypes.func.isRequired,
+  openDialog: PropTypes.bool
 };
 
 const mapStateToProps = state => ({

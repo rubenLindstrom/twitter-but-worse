@@ -42,6 +42,15 @@ export default (state = initialState, action) => {
         )
       };
 
+    case userTypes.MARK_NOTIFICATIONS_READ:
+      return {
+        ...state,
+        notifications: state.notifications.map(not => ({
+          ...not,
+          read: true
+        }))
+      };
+
     default:
       return state;
   }

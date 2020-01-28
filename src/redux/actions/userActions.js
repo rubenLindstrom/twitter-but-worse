@@ -91,11 +91,25 @@ const editDetails = userDetails => dispatch => {
     .catch(err => console.log(err));
 };
 
+const markNotificationsRead = notificationIds => dispatch => {
+  axios
+    .post("/notifications", notificationIds)
+    .then(res => {
+      dispatch({
+        type: userTypes.MARK_NOTIFICATIONS_READ
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
 export default {
   login,
   getUserData,
   signup,
   logout,
   uploadImage,
-  editDetails
+  editDetails,
+  markNotificationsRead
 };

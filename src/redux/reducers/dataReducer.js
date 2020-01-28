@@ -2,8 +2,7 @@ import { dataTypes } from "../types";
 
 const initialState = {
   posts: null,
-  loading: false,
-  currentProfile: null
+  loading: false
 };
 
 export default (state = initialState, action) => {
@@ -20,7 +19,9 @@ export default (state = initialState, action) => {
     case dataTypes.DISAPPROVE_POST:
       const { isApprove } = action.payload;
       newPosts = { ...state.posts };
-      newPosts[action.payload.postId].approveCount += isApprove ? 1 : -1;
+      newPost = { ...newPosts[action.payload.postId] };
+      newPost.approveCount += isApprove ? 1 : -1;
+      newPosts[action.payload.postId] = newPost;
       return {
         ...state,
         posts: newPosts
@@ -42,7 +43,9 @@ export default (state = initialState, action) => {
 
     case dataTypes.SET_COMMENTS:
       newPosts = { ...state.posts };
-      newPosts[action.payload.postId].comments = action.payload.comments;
+      newPost = { ...newPosts[action.payload.postId] };
+      newPost.comments = action.payload.comments;
+      newPosts[action.payload.postId] = newPost;
       return {
         ...state,
         posts: newPosts
@@ -51,8 +54,11 @@ export default (state = initialState, action) => {
     case dataTypes.SUBMIT_COMMENT:
       const { comment } = action.payload;
       newPosts = { ...state.posts };
-      newPosts[action.payload.postId].comments.unshift(comment);
-      newPosts[action.payload.postId].commentIds.unshift(comment.id);
+      newPost = { ...newPosts[action.payload.postId] };
+      newPost.comments.unshift(comment);
+      newPost.commentIds.unshift(comment.id);
+      newPost.commentCount++;
+      newPosts[action.payload.postId] = newPost;
       return {
         ...state,
         posts: newPosts
@@ -65,13 +71,8 @@ export default (state = initialState, action) => {
 
       let { commentCount, commentIds, comments } = newPost;
 
-      // 1. Decrementa commentcount
       commentCount--;
-
-      // 2. Ta bort kommentar från commentIds
       commentIds.splice(commentIds.indexOf(commentId), 1);
-
-      // 3. Ta bort kommentar från comments
       const newComments = comments.filter(comment => comment.id !== commentId);
 
       newPost = { ...newPost, commentCount, commentIds, comments: newComments };
