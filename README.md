@@ -1,9 +1,9 @@
 # twitter-but-worse
-Full stack social media app, built with React, Node and Firebase Cloud Functions
+Full stack social media app, built with React, Node and Firebase Cloud Functions :family:
 
 ## See the website live
 
-The website is deployed at [https://soccio-e29bc.web.app](https://soccio-e29bc.web.app). :earth_africa: :sun_behind_rain_cloud:
+The website is deployed at [https://soccio-e29bc.web.app](https://soccio-e29bc.web.app). :earth_africa: 
 
 ## Client
 
@@ -28,7 +28,7 @@ Tests can be run with
 
 ## Cloud functions
 
-To get going with the backend, you can run the following command in the _functions_ directory
+To get going with the backend, you can run the following command in the _functions_ directory :zap:
 
 #### `npm install`
 
@@ -47,4 +47,4 @@ The functions are available by running
     │   │  ├── admin.js               # Contains the firebase admin sdk connection
     │   │  ├── auth.js                # Contains the authentication middleware, used on protected routes
     │   │  └── validators.js          # Contains input validators
-    └── index.js.                 # Connects the handlers to their respective route, and implements triggers
+    └── index.js.                     # Connects the handlers to their respective route, and implements triggers
